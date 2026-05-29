@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mis Gastos - App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Mis Gastos</h1>
+    <p>Gestiona tus gastos personales localmente.</p>
+  </header>
+
+  <main class="container">
+    <section class="left">
+      <button id="toggleForm" class="add-btn">＋ Añadir gasto</button>
+      <form id="expenseForm" class="card hidden">
+        <h2>Añadir gasto</h2>
+        <label>Tipo
+          <select id="type">
+            <option value="Gasto">Gasto</option>
+            <option value="Ingreso">Ingreso</option>
+          </select>
+        </label>
+        <label>Monto (€)
+          <input type="number" step="0.01" id="amount" required>
+        </label>
+        <label>Categoría
+          <select id="category">
+            <option value="Comida">Comida</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Hogar">Hogar</option>
+            <option value="Ocio">Ocio</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </label>
+        <label>Fecha
+          <input type="date" id="date" required>
+        </label>
+        <label>Descripción
+          <input type="text" id="description" placeholder="Opcional">
+        </label>
+        <div class="actions">
+          <button type="submit">Guardar</button>
+          <button type="button" id="resetBtn" class="secondary">Limpiar</button>
+        </div>
+      </form>
+
+      <div class="card filters">
+        <h3>Filtros</h3>
+        <label>Tipo
+          <select id="filterType">
+            <option value="">Todos</option>
+            <option value="Gasto">Gasto</option>
+            <option value="Ingreso">Ingreso</option>
+          </select>
+        </label>
+        <label>Desde
+          <input type="date" id="filterFrom">
+        </label>
+        <label>Hasta
+          <input type="date" id="filterTo">
+        </label>
+        <label>Categoría
+          <select id="filterCategory">
+            <option value="">Todas</option>
+            <option value="Comida">Comida</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Hogar">Hogar</option>
+            <option value="Ocio">Ocio</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </label>
+        <div class="actions">
+          <button id="applyFilters">Aplicar</button>
+          <button id="clearFilters" class="secondary">Limpiar filtros</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="right">
+      <div class="card chart-row">
+        <div class="chart-card">
+          <h3>Comparativa Ingresos vs Gastos</h3>
+          <canvas id="summaryChart" width="400" height="200"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Gasto diario (últimos 30 días)</h3>
+          <canvas id="dailyChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+      <div class="card chart-row">
+        <div class="chart-card">
+          <h3>Gasto por categoría</h3>
+          <canvas id="categoryChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+      <div class="card summary">
+        <h3>Resumen</h3>
+        <div id="totals">
+          <p>Total: <strong id="totalAmount">€0.00</strong></p>
+          <div id="byCategory"></div>
+        </div>
+      </div>
+
+      <div class="card list">
+        <h3>Listado de gastos</h3>
+        <div id="expenseList"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
