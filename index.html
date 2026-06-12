@@ -1,117 +1,94 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mis Gastos - App</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de gastos</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Mis Gastos</h1>
-    <p>Gestiona tus gastos personales localmente.</p>
-  </header>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Gestor de finanzas</p>
+        <h1>Control de gastos</h1>
+        <p class="lead">Añade tus gastos, controla tus categorías y visualiza tu evolución diaria.</p>
+      </div>
+      <div class="summary-card">
+        <span>Total gastado</span>
+        <strong id="totalAmount">€0.00</strong>
+      </div>
+    </header>
 
-  <main class="container">
-    <section class="left">
-      <button id="toggleForm" class="add-btn">＋ Añadir gasto</button>
-      <form id="expenseForm" class="card hidden">
+    <main>
+      <section class="form-card">
         <h2>Añadir gasto</h2>
-        <label>Tipo
-          <select id="type">
-            <option value="Gasto">Gasto</option>
-            <option value="Ingreso">Ingreso</option>
-          </select>
-        </label>
-        <label>Monto (€)
-          <input type="number" step="0.01" id="amount" required>
-        </label>
-        <label>Categoría
-          <select id="category">
-            <option value="Comida">Comida</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Hogar">Hogar</option>
-            <option value="Ocio">Ocio</option>
-            <option value="Otros">Otros</option>
-          </select>
-        </label>
-        <label>Fecha
-          <input type="date" id="date" required>
-        </label>
-        <label>Descripción
-          <input type="text" id="description" placeholder="Opcional">
-        </label>
-        <div class="actions">
-          <button type="submit">Guardar</button>
-          <button type="button" id="resetBtn" class="secondary">Limpiar</button>
-        </div>
-      </form>
+        <form id="expenseForm">
+          <label>
+            Descripción
+            <input type="text" id="description" placeholder="Café, supermercado, transporte" required>
+          </label>
+          <label>
+            Cantidad (€)
+            <input type="number" id="amount" min="0.01" step="0.01" placeholder="12.50" required>
+          </label>
+          <label>
+            Categoría
+            <select id="category" required>
+              <option value="Alimentación">Alimentación</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Ocio">Ocio</option>
+              <option value="Hogar">Hogar</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </label>
+          <label>
+            Fecha
+            <input type="date" id="date" required>
+          </label>
+          <input type="hidden" id="expenseIndex" value="">
+          <div class="form-actions">
+            <button type="submit" class="primary-button" id="submitButton">Añadir gasto</button>
+            <button type="button" class="secondary-button hidden" id="cancelEdit">Cancelar</button>
+          </div>
+        </form>
+      </section>
 
-      <div class="card filters">
-        <h3>Filtros</h3>
-        <label>Tipo
-          <select id="filterType">
-            <option value="">Todos</option>
-            <option value="Gasto">Gasto</option>
-            <option value="Ingreso">Ingreso</option>
-          </select>
-        </label>
-        <label>Desde
-          <input type="date" id="filterFrom">
-        </label>
-        <label>Hasta
-          <input type="date" id="filterTo">
-        </label>
-        <label>Categoría
-          <select id="filterCategory">
-            <option value="">Todas</option>
-            <option value="Comida">Comida</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Hogar">Hogar</option>
-            <option value="Ocio">Ocio</option>
-            <option value="Otros">Otros</option>
-          </select>
-        </label>
-        <div class="actions">
-          <button id="applyFilters">Aplicar</button>
-          <button id="clearFilters" class="secondary">Limpiar filtros</button>
-        </div>
-      </div>
-    </section>
+      <section class="dashboard-grid">
+        <article class="panel">
+          <h2>Gastos recientes</h2>
+          <ul id="expenseList" class="expense-list"></ul>
+        </article>
 
-    <section class="right">
-      <div class="card chart-row">
-        <div class="chart-card">
-          <h3>Comparativa Ingresos vs Gastos</h3>
-          <canvas id="summaryChart" width="400" height="200"></canvas>
-        </div>
-        <div class="chart-card">
-          <h3>Gasto diario (últimos 30 días)</h3>
-          <canvas id="dailyChart" width="400" height="200"></canvas>
-        </div>
-      </div>
-      <div class="card chart-row">
-        <div class="chart-card">
-          <h3>Gasto por categoría</h3>
-          <canvas id="categoryChart" width="400" height="200"></canvas>
-        </div>
-      </div>
-      <div class="card summary">
-        <h3>Resumen</h3>
-        <div id="totals">
-          <p>Total: <strong id="totalAmount">€0.00</strong></p>
-          <div id="byCategory"></div>
-        </div>
-      </div>
+        <article class="panel stats-panel">
+          <div class="stat-item">
+            <span>Gastos total</span>
+            <strong id="expenseCount">0</strong>
+          </div>
+          <div class="stat-item">
+            <span>Categorías usadas</span>
+            <strong id="categoryCount">0</strong>
+          </div>
+          <div class="stat-item">
+            <span>Último gasto</span>
+            <strong id="lastExpense">N/A</strong>
+          </div>
+        </article>
+      </section>
 
-      <div class="card list">
-        <h3>Listado de gastos</h3>
-        <div id="expenseList"></div>
-      </div>
-    </section>
-  </main>
+      <section class="charts-grid">
+        <article class="chart-card">
+          <h2>Evolución diaria</h2>
+          <canvas id="dailyChart" width="600" height="300"></canvas>
+        </article>
+        <article class="chart-card">
+          <h2>Distribución por categoría</h2>
+          <canvas id="categoryChart" width="600" height="300"></canvas>
+        </article>
+      </section>
+    </main>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

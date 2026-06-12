@@ -1,24 +1,310 @@
-*{box-sizing:border-box}
-body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:#f4f7fb;color:#111}
-header{background:#2b6cb0;color:#fff;padding:18px;text-align:center}
-.container{display:flex;gap:18px;padding:18px;max-width:1100px;margin:0 auto}
-.card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.left{flex:0 0 360px;display:flex;flex-direction:column;gap:12px}
-.right{flex:1;display:flex;flex-direction:column;gap:12px}
-canvas{max-width:100%;height:auto}
-.add-btn{background:#2ecc71;color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:600}
-.hidden{display:none}
-.chart-row{display:flex;gap:12px;flex-wrap:wrap}
-.chart-card{flex:1;min-width:220px}
-label{display:block;margin-bottom:8px;font-size:14px}
-input[type="text"],input[type="number"],input[type="date"],select{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd}
-.actions{display:flex;gap:8px;margin-top:8px}
-button{padding:8px 12px;border-radius:6px;border:none;background:#2b6cb0;color:#fff;cursor:pointer}
-button.secondary{background:#e2e8f0;color:#111}
-.summary p{margin:6px 0}
-#expenseList{display:flex;flex-direction:column;gap:8px}
-.expense-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:6px;border:1px solid #eee}
-.expense-meta{display:flex;flex-direction:column}
-.expense-actions{display:flex;gap:8px}
-.small{font-size:13px;color:#666}
-@media(max-width:900px){.container{flex-direction:column}.left{flex:auto}}
+:root {
+  color-scheme: light;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f5f7fb;
+  color: #1f2937;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffffff 0%, #eef2ff 100%);
+}
+
+.app-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+.app-header {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #6366f1;
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.lead {
+  color: #4b5563;
+  max-width: 42rem;
+}
+
+.summary-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 24px 28px;
+  min-width: 200px;
+  text-align: right;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.06);
+}
+
+.summary-card span {
+  display: block;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.summary-card strong {
+  font-size: 2rem;
+  color: #111827;
+}
+
+main {
+  display: grid;
+  gap: 28px;
+}
+
+.form-card,
+.panel,
+.chart-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.05);
+}
+
+.form-card h2,
+.panel h2,
+.chart-card h2 {
+  margin: 0 0 18px;
+  font-size: 1.25rem;
+}
+
+#expenseForm {
+  display: grid;
+  gap: 18px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  color: #374151;
+  font-weight: 600;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  font: inherit;
+  color: #111827;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.primary-button,
+.secondary-button {
+  border: none;
+  padding: 14px 22px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary-button {
+  background: #5b7bff;
+  color: white;
+  box-shadow: 0 12px 24px rgba(91, 123, 255, 0.18);
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+  background: #435fe0;
+}
+
+.secondary-button {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.secondary-button:hover {
+  transform: translateY(-2px);
+  background: #e2e8f0;
+}
+
+.hidden {
+  display: none;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 2fr 1fr;
+}
+
+.stats-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.stat-item {
+  background: #f8fafc;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+}
+
+.stat-item span {
+  display: block;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.stat-item strong {
+  font-size: 1.5rem;
+  color: #111827;
+}
+
+.expense-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.expense-item {
+  display: grid;
+  grid-template-columns: 1.4fr auto 1fr;
+  gap: 18px;
+  padding: 20px;
+  border-radius: 22px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  align-items: center;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+}
+
+.expense-item:hover {
+  transform: translateY(-1px);
+  transition: transform 0.15s ease;
+}
+
+.expense-meta {
+  display: grid;
+  gap: 8px;
+}
+
+.expense-meta strong {
+  font-size: 1.05rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.expense-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.action-button {
+  border: none;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.edit-button {
+  background: #38bdf8;
+  color: white;
+}
+
+.delete-button {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.edit-button:hover {
+  opacity: 0.95;
+}
+
+.delete-button:hover {
+  opacity: 0.95;
+}
+
+.expense-amount {
+  text-align: right;
+}
+
+.expense-amount span {
+  display: block;
+  color: #4b5563;
+}
+
+.charts-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.chart-card canvas {
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid,
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .expense-item {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    padding: 24px 16px 32px;
+  }
+}
